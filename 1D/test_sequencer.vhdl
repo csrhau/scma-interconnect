@@ -75,12 +75,6 @@ begin
     assert write_enable = '0'
       report "Write should not be enabled during NORTH OUTFLOW" severity error;
 
-
-
-
-
-
-
     wait;
   end process;
 end behavioural;
