@@ -1,2 +1,7 @@
+*.o 
+*.cf
+*.ghw
+
 test_fifo
 test_ram
+test_sequencer
