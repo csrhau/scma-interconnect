@@ -1,8 +1,12 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use work.scma_types.all;
 
 entity RAM is 
+  generic (
+    contents : memory_t := (others => (others => '1'))
+  );
   port (
     clock : in std_logic;
     write_enable : in std_logic; 
@@ -13,8 +17,7 @@ entity RAM is
 end entity RAM;
 
 architecture behavioural of RAM is
-  type memory is array(0 to 1023) of std_logic_vector(7 downto 0);
-  signal storage : memory := (others => (others => '0'));
+  signal storage : memory_t := (others => (others => '0'));
  begin
 
   process(clock)

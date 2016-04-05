@@ -6,3 +6,4 @@ test_fifo
 test_ram
 test_sequencer
 test_integration
+test_pe

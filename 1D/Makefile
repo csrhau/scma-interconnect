@@ -1,4 +1,9 @@
-all: test_fifo.ghw test_ram.ghw test_sequencer.ghw test_integration.ghw
+
+# todo  test_integration.ghw 
+all: test_fifo.ghw test_ram.ghw test_sequencer.ghw test_pe.ghw test_pe.ghw
+
+scma_types.o: scma_types.vhdl
+	ghdl -a $<
 
 fifo.o: fifo.vhdl
 	ghdl -a $<
@@ -12,7 +17,7 @@ test_fifo: test_fifo.o
 test_fifo.ghw: test_fifo
 	./$< --wave=$@
 
-ram.o: ram.vhdl 
+ram.o: ram.vhdl scma_types.o
 	ghdl -a $<
 
 test_ram.o: test_ram.vhdl ram.o 
@@ -23,9 +28,6 @@ test_ram: test_ram.o
 
 test_ram.ghw: test_ram
 	./$< --wave=$@
-
-scma_types.o: scma_types.vhdl
-	ghdl -a $<
 
 sequencer.o: sequencer.vhdl scma_types.o
 	ghdl -a $<
@@ -39,6 +41,18 @@ test_sequencer: test_sequencer.o
 test_sequencer.ghw: test_sequencer
 	./$< --wave=$@
 
+pe.o: pe.vhdl ram.o scma_types.o
+	ghdl -a $<
+
+test_pe.o: test_pe.vhdl pe.o ram.o scma_types.o
+	ghdl -a $<
+
+test_pe: test_pe.o
+	ghdl -m $@
+
+test_pe.ghw: test_pe
+	./$< --wave=$@
+
 test_integration.o: test_integration.vhdl fifo.o sequencer.o ram.o scma_types.o
 	ghdl -a $<
 
@@ -47,6 +61,7 @@ test_integration: test_integration.o
 
 test_integration.ghw: test_integration
 	./$< --wave=$@
+
 
 
 

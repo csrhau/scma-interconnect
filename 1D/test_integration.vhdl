@@ -16,7 +16,8 @@ architecture behavioural of test_integration is
     );
   end component sequencer;
   
-  component RAM is port (
+  component RAM is
+    port (
       clock : in std_logic;
       write_enable : in std_logic; 
       address : in std_logic_vector(9 downto 0);
@@ -76,7 +77,7 @@ begin
   N_OUT_FIFO : FIFO port map(clock, up_fifo_push, up_fifo_pop, ram_data_out, n_out_fifo_output, n_out_fifo_full, n_out_fifo_empty);
   S_IN_FIFO : FIFO port map(clock, down_fifo_push, down_fifo_pop, s_in_fifo_input, s_in_fifo_output, s_in_fifo_full, s_in_fifo_empty);
   S_OUT_FIFO : FIFO port map(clock, up_fifo_push, up_fifo_pop, ram_data_out, s_out_fifo_output, s_out_fifo_full, s_out_fifo_empty);
-  MEMORY : RAM port map(clock, ram_write_enable, ram_address, ram_data_in, ram_data_out);
+  STORAGE : RAM port map(clock, ram_write_enable, ram_address, ram_data_in, ram_data_out);
   SEQ : sequencer port map(clock, seq_enable, seq_address, seq_orientation, seq_operation);
 
   down_fifo_pop  <= '1' when seq_orientation = NORTH and seq_operation = INFLOW and seq_enable = '1' else '0';
