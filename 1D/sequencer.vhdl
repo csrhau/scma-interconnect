@@ -8,6 +8,7 @@ entity sequencer is
     clock: in std_logic;
     address : out std_logic_vector(9 downto 0);
     direction : out direction_t;
+    operation : out operation_t;
     write_enable : out std_logic
   );
 end entity sequencer;
@@ -61,19 +62,23 @@ begin
     -- RAM TO FIFO
     when OUTFLOW_NORTH =>
       direction <= NORTH;
+      operation <= OUTFLOW;
       write_enable <= '0';
       address <= std_logic_vector(to_unsigned(column + 1 * COLS, address'length)); 
     when OUTFLOW_SOUTH =>
       direction <= SOUTH;
+      operation <= OUTFLOW;
       write_enable <= '0';
       address <= std_logic_vector(to_unsigned(column + (ROWS-2) * COLS, address'length)); 
     -- FIFO TO RAM
     when INFLOW_NORTH =>
       direction <= NORTH;
+      operation <= INFLOW;
       write_enable <= '1';
       address <= std_logic_vector(to_unsigned(column, address'length)); 
     when INFLOW_SOUTH =>
       direction <= SOUTH;
+      operation <= INFLOW;
       write_enable <= '1';
       address <= std_logic_vector(to_unsigned(column + (ROWS-1) * COLS, address'length)); 
     end case;
