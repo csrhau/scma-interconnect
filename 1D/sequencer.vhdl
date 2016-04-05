@@ -6,6 +6,7 @@ use work.scma_types.all;
 entity sequencer is
   port (
     clock: in std_logic;
+    enable: in std_logic;
     address : out std_logic_vector(9 downto 0);
     direction : out direction_t;
     operation : out operation_t
@@ -22,37 +23,39 @@ begin
   SEQUENTIAL: process(clock) 
   begin
     if rising_edge(clock) then
-      case state is
-      when OUTFLOW_NORTH =>
-        if column < 31 then
-          column <= column + 1;
-        else
-          column <= 0;
-          state <= OUTFLOW_SOUTH;
-        end if;
-      when OUTFLOW_SOUTH =>
-        if column < 31 then
-          column <= column + 1;
-        else
-          column <= 0;
-          state <= INFLOW_NORTH;
-        end if;
-      when INFLOW_NORTH =>
-        if column < 31 then
-          column <= column + 1;
-        else
-          column <= 0;
-          state <= INFLOW_SOUTH;
-        end if;
-      when INFLOW_SOUTH =>
-        if column < 31 then
-          column <= column + 1;
-        else
-          column <= 0;
-          state <= OUTFLOW_NORTH;
-        end if;
-      end case;
-    end if;
+      if enable = '1' then
+        case state is
+        when OUTFLOW_NORTH =>
+          if column < 31 then
+            column <= column + 1;
+          else
+            column <= 0;
+            state <= OUTFLOW_SOUTH;
+          end if;
+        when OUTFLOW_SOUTH =>
+          if column < 31 then
+            column <= column + 1;
+          else
+            column <= 0;
+            state <= INFLOW_NORTH;
+          end if;
+        when INFLOW_NORTH =>
+          if column < 31 then
+            column <= column + 1;
+          else
+            column <= 0;
+            state <= INFLOW_SOUTH;
+          end if;
+        when INFLOW_SOUTH =>
+          if column < 31 then
+            column <= column + 1;
+          else
+            column <= 0;
+            state <= OUTFLOW_NORTH;
+          end if;
+        end case;
+      end if; -- enablement
+    end if; -- rising_edge
   end process SEQUENTIAL;
 
   COMBINATORIAL: process(column, state) 

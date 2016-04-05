@@ -10,6 +10,7 @@ architecture behavioural of test_sequencer is
   component sequencer is
     port (
       clock: in std_logic;
+      enable: in std_logic;
       address : out std_logic_vector(9 downto 0);
       direction : out direction_t;
       operation : out operation_t
@@ -17,13 +18,14 @@ architecture behavioural of test_sequencer is
   end component sequencer;
 
   signal clock : std_logic;
+  signal enable : std_logic := '1';
   signal address : std_logic_vector(9 downto 0);
   signal direction : direction_t;
   signal operation : operation_t;
 
 begin
 
-  SEQ : sequencer port map(clock, address, direction, operation);
+  SEQ : sequencer port map(clock, enable, address, direction, operation);
 
   process
     -- Helper procedures
@@ -85,6 +87,26 @@ begin
     end loop;
     -- Back to start
     CYCLE;
+    assert direction = NORTH
+      report "North outflow direction should be NORTH" severity error;
+    assert operation = OUTFLOW
+      report "North outflow operation should be OUTFLOW" severity error;
+    assert to_integer(unsigned(address)) = 32
+      report "First read should come from cell 0, row 1 (cell 32)" severity error;
+    enable <= '0';
+    -- No progress should be made
+    for i in 0 to 70 loop
+      CYCLE;
+    end loop;
+    -- If the enable='0' fails, we'll be somewhere in south inflow
+    assert direction = NORTH
+      report "Direction should not change when sequencer is disabled" severity error;
+    assert operation = OUTFLOW
+      report "Operation should not change when sequencer is disabled" severity error;
+ 
+
+
+ 
 
     wait;
   end process;
