@@ -4,7 +4,7 @@ use ieee.numeric_std.all;
 
 entity FIFO is 
   generic (
-    addr_bits: natural
+    addr_bits: natural := 5
   );
   port (
     clock   : in std_logic;
