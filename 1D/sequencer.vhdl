@@ -8,7 +8,7 @@ entity sequencer is
     clock: in std_logic;
     enable: in std_logic;
     address : out std_logic_vector(9 downto 0);
-    direction : out direction_t;
+    orientation : out orientation_t;
     operation : out operation_t
   );
 end entity sequencer;
@@ -63,20 +63,20 @@ begin
     case state is
     -- RAM TO FIFO
     when OUTFLOW_NORTH =>
-      direction <= NORTH;
+      orientation <= NORTH;
       operation <= OUTFLOW;
       address <= std_logic_vector(to_unsigned(column + 1 * COLS, address'length)); 
     when OUTFLOW_SOUTH =>
-      direction <= SOUTH;
+      orientation <= SOUTH;
       operation <= OUTFLOW;
       address <= std_logic_vector(to_unsigned(column + (ROWS-2) * COLS, address'length)); 
     -- FIFO TO RAM
     when INFLOW_NORTH =>
-      direction <= NORTH;
+      orientation <= NORTH;
       operation <= INFLOW;
       address <= std_logic_vector(to_unsigned(column, address'length)); 
     when INFLOW_SOUTH =>
-      direction <= SOUTH;
+      orientation <= SOUTH;
       operation <= INFLOW;
       address <= std_logic_vector(to_unsigned(column + (ROWS-1) * COLS, address'length)); 
     end case;
