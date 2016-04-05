@@ -1,6 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use work.scma_types.all;
 
 entity test_sequencer is
 end test_sequencer;
@@ -10,17 +11,19 @@ architecture behavioural of test_sequencer is
     port (
       clock: in std_logic;
       address : out std_logic_vector(9 downto 0);
+      direction : out direction_t;
       write_enable : out std_logic
     );
   end component sequencer;
 
   signal clock : std_logic;
   signal address : std_logic_vector(9 downto 0);
+  signal direction : direction_t;
   signal write_enable: std_logic;
 
 begin
 
-  SEQ : sequencer port map(clock, address, write_enable);
+  SEQ : sequencer port map(clock, address, direction, write_enable);
 
   process
     -- Helper procedures
@@ -35,12 +38,16 @@ begin
     wait for 1 ns;
 
     -- NORTH_OUTFLOW
+    assert direction = NORTH
+      report "North outflow direction should be NORTH" severity error;
     assert write_enable = '0'
       report "write should be disabled initially" severity error;
     assert to_integer(unsigned(address)) = 32
       report "First read should come from cell 0, row 1 (cell 32)" severity error;
     for i in 1 to 31 loop
       CYCLE;
+      assert direction = NORTH
+        report "North outflow direction should be NORTH" severity error;
       assert write_enable = '0'
         report "Write should not be enabled during NORTH OUTFLOW" severity error;
       assert to_integer(unsigned(address)) = (32 + i)
@@ -49,6 +56,8 @@ begin
     -- SOUTH_OUTFLOW
     for i in 0 to 31 loop
       CYCLE;
+      assert direction = SOUTH
+        report "South outflow direction should be SOUTH" severity error;
       assert write_enable = '0'
         report "Write should not be enabled during SOUTH OUTFLOW" severity error;
       assert to_integer(unsigned(address)) = (30 * 32 + i)
@@ -57,6 +66,8 @@ begin
     -- NORTH_INFLOW
     for i in 0 to 31 loop
       CYCLE;
+      assert direction = NORTH
+        report "North inflow direction should be NORTH" severity error;
       assert write_enable = '1'
         report "Write should be enabled during NORTH INFLOW" severity error;
       assert to_integer(unsigned(address)) = i
@@ -65,6 +76,8 @@ begin
     -- SOUTH_INFLOW
     for i in 0 to 31 loop
       CYCLE;
+      assert direction = SOUTH
+        report "South inflow direction should be SOUTH" severity error;
       assert write_enable = '1'
         report "Write should be enabled during SOUTH INFLOW" severity error;
       assert to_integer(unsigned(address)) = (31 * 32 + i) 

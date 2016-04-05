@@ -24,10 +24,13 @@ test_ram: test_ram.o
 test_ram.ghw: test_ram
 	./$< --wave=$@
 
-sequencer.o: sequencer.vhdl 
+scma_types.o: scma_types.vhdl
 	ghdl -a $<
 
-test_sequencer.o: test_sequencer.vhdl sequencer.o 
+sequencer.o: sequencer.vhdl scma_types.o
+	ghdl -a $<
+
+test_sequencer.o: test_sequencer.vhdl sequencer.o scma_types.o
 	ghdl -a $<
 
 test_sequencer: test_sequencer.o
@@ -35,8 +38,6 @@ test_sequencer: test_sequencer.o
 
 test_sequencer.ghw: test_sequencer
 	./$< --wave=$@
-
-
 
 clean: 
 	rm -f *.o *.cf *.ghw
