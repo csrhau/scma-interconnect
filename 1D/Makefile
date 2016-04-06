@@ -1,6 +1,4 @@
-
-# todo  test_integration.ghw 
-all: test_fifo.ghw test_ram.ghw test_sequencer.ghw test_pe.ghw test_pe.ghw
+all: test_fifo.ghw test_ram.ghw test_sequencer.ghw test_pe.ghw test_pe.ghw test_integration.ghw
 
 scma_types.o: scma_types.vhdl
 	ghdl -a $<
@@ -44,7 +42,6 @@ test_sequencer.ghw: test_sequencer
 test_helpers.o: test_helpers.vhdl
 	ghdl -a $<
 
-
 pe.o: pe.vhdl ram.o scma_types.o
 	ghdl -a $<
 
@@ -65,9 +62,6 @@ test_integration: test_integration.o
 
 test_integration.ghw: test_integration
 	./$< --wave=$@
-
-
-
 
 clean: 
 	rm -f *.o *.cf *.ghw

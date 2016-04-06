@@ -4,7 +4,8 @@ use ieee.numeric_std.all;
 
 entity FIFO is 
   generic (
-    addr_bits: natural := 5
+    addr_bits: natural;
+    capacity : natural
   );
   port (
     clock   : in std_logic;
@@ -15,10 +16,10 @@ entity FIFO is
     full    : out std_logic;
     empty   : out std_logic
    );
-end entity fifo;
+end entity FIFO;
 
 architecture behavioural of FIFO is
-  type FIFO_storage is array(0 to addr_bits**2 - 1) of std_logic_vector(7 downto 0);
+  type FIFO_storage is array(0 to capacity-1) of std_logic_vector(7 downto 0);
   signal storage : FIFO_storage := (others => (others => '0'));
   signal head : std_logic_vector(addr_bits-1 downto 0) := (others => '0');
   signal tail : std_logic_vector(addr_bits-1 downto 0) := (others => '0');

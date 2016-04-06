@@ -4,7 +4,7 @@ use work.scma_types.all;
 
 entity PE is 
   generic (
-    pe_contents : memory_t := (others => (others => '0'))
+    pe_contents : memory_t
   );
   port (
     clock: in std_logic;
@@ -16,13 +16,12 @@ entity PE is
     south_input : in std_logic_vector(7 downto 0);   -- the output of the south in fifo
     output : out std_logic_vector(7 downto 0)        -- The output to both fifos (gets switched by sequencer)
   );
-end entity PE;
-
+end entity PE; 
 architecture structural of PE is
 
   component RAM is 
     generic (
-      contents : memory_t := (others => (others => '1'))
+      contents : memory_t
     );        
     port (
       clock : in std_logic;

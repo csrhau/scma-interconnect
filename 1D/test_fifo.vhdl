@@ -8,7 +8,8 @@ end test_fifo;
 architecture behavioural of test_fifo is
   component FIFO is 
     generic (
-      addr_bits: natural
+      addr_bits: natural;
+      capacity : natural
     );
     port (
       clock   : in std_logic;
@@ -60,7 +61,7 @@ architecture behavioural of test_fifo is
 
 
   begin
-  queue : FIFO generic map(addr_bits => 3) -- fifo with 8 elements
+  queue : FIFO generic map(addr_bits => 3, capacity => 8) -- fifo with 8 elements
                port map (clock, push, pop, input, output, full, empty);
 
   process
