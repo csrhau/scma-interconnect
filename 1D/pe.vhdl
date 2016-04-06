@@ -4,7 +4,7 @@ use work.scma_types.all;
 
 entity PE is 
   generic (
-    contents : memory_t := (others => (others => '1'))
+    pe_contents : memory_t := (others => (others => '0'))
   );
   port (
     clock: in std_logic;
@@ -38,7 +38,7 @@ architecture structural of PE is
 
 begin
 
-  STORAGE: RAM generic map(contents) 
+  STORAGE: RAM generic map(contents => pe_contents) 
               port map(clock, ram_write_enable, seq_address, ram_data_in, output);
 
   ram_write_enable <= '1' when seq_operation = INFLOW and enable = '1' else '0';

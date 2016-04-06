@@ -41,10 +41,14 @@ test_sequencer: test_sequencer.o
 test_sequencer.ghw: test_sequencer
 	./$< --wave=$@
 
+test_helpers.o: test_helpers.vhdl
+	ghdl -a $<
+
+
 pe.o: pe.vhdl ram.o scma_types.o
 	ghdl -a $<
 
-test_pe.o: test_pe.vhdl pe.o ram.o scma_types.o
+test_pe.o: test_pe.vhdl pe.o ram.o scma_types.o test_helpers.o
 	ghdl -a $<
 
 test_pe: test_pe.o

@@ -5,7 +5,7 @@ use work.scma_types.all;
 
 entity RAM is 
   generic (
-    contents : memory_t := (others => (others => '1'))
+    contents : memory_t := (others => (others => '0'))
   );
   port (
     clock : in std_logic;
@@ -17,7 +17,7 @@ entity RAM is
 end entity RAM;
 
 architecture behavioural of RAM is
-  signal storage : memory_t := (others => (others => '0'));
+  signal storage : memory_t := contents;
  begin
 
   process(clock)
