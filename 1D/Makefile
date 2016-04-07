@@ -72,3 +72,4 @@ clean:
 	rm -rf ./test_ram 
 	rm -rf ./test_resequencer
 	rm -rf ./test_integration
+	rm -rf ./test_pe
