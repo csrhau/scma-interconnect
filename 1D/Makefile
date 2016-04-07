@@ -1,6 +1,4 @@
-#all: test_fifo.ghw test_ram.ghw test_sequencer.ghw test_pe.ghw test_pe.ghw test_integration.ghw
-
-all: test_resequencer.ghw
+all: test_fifo.ghw test_ram.ghw test_pe.ghw test_pe.ghw test_integration.ghw test_resequencer.ghw
 
 scma_types.o: scma_types.vhdl
 	ghdl -a $<
@@ -32,16 +30,6 @@ test_ram.ghw: test_ram
 sequencer.o: sequencer.vhdl scma_types.o
 	ghdl -a $<
 
-test_sequencer.o: test_sequencer.vhdl sequencer.o scma_types.o
-	ghdl -a $<
-
-test_sequencer: test_sequencer.o
-	ghdl -m $@
-
-test_sequencer.ghw: test_sequencer
-	./$< --wave=$@
-
-
 resequencer.o: resequencer.vhdl scma_types.o
 	ghdl -a $<
 
@@ -53,8 +41,6 @@ test_resequencer: test_resequencer.o
 
 test_resequencer.ghw: test_resequencer
 	./$< --wave=$@
-
-
 
 test_helpers.o: test_helpers.vhdl
 	ghdl -a $<
@@ -84,6 +70,5 @@ clean:
 	rm -f *.o *.cf *.ghw
 	rm -rf ./test_fifo 
 	rm -rf ./test_ram 
-	rm -rf ./test_sequencer
 	rm -rf ./test_resequencer
 	rm -rf ./test_integration
