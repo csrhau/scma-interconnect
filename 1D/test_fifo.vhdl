@@ -60,7 +60,7 @@ architecture behavioural of test_fifo is
   end procedure;
 
 
-  begin
+begin
   queue : FIFO generic map(addr_bits => 3, capacity => 8) -- fifo with 8 elements
                port map (clock, push, pop, input, output, full, empty);
 
