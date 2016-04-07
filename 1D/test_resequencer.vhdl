@@ -16,7 +16,6 @@ architecture behavioural of test_resequencer is
       up_fifo_pop   : out std_logic;
       down_fifo_push: out std_logic;
       down_fifo_pop : out std_logic;
-      write_enable  : out std_logic;
       address       : out std_logic_vector(9 downto 0)
     );
   end component resequencer;
@@ -27,11 +26,10 @@ architecture behavioural of test_resequencer is
   signal up_fifo_pop    : std_logic;
   signal down_fifo_push : std_logic;
   signal down_fifo_pop  : std_logic;
-  signal write_enable   : std_logic;
   signal address        : std_logic_vector(9 downto 0);
 
 begin
-  SEQU: resequencer port map(clock, enable, up_fifo_push, up_fifo_pop, down_fifo_push, down_fifo_pop, write_enable, address);
+  SEQU: resequencer port map(clock, enable, up_fifo_push, up_fifo_pop, down_fifo_push, down_fifo_pop, address);
   process
     -- Helper procedures
     procedure CYCLE is
@@ -46,15 +44,11 @@ begin
     wait for 1 ns;
     assert enable = '0'
       report "Starts disabled" severity error;
-    assert write_enable = '0'
-      report "Write should be disabled" severity error;
     assert up_fifo_push = '0' and up_fifo_pop = '0' and 
            down_fifo_push = '0' and down_fifo_pop = '0'
       report "All fifo control signals should be zero" severity error;
 
     CYCLE;
-    assert write_enable = '0'
-      report "Write should be disabled" severity error;
     assert up_fifo_push = '0' and up_fifo_pop = '0' and 
            down_fifo_push = '0' and down_fifo_pop = '0'
       report "All fifo control signals should be zero" severity error;
@@ -63,8 +57,6 @@ begin
 
     for i in 33 to 63 loop 
       CYCLE;
-      assert write_enable = '0'
-        report "Write should be disabled" severity error;
       assert up_fifo_push = '1' and up_fifo_pop = '0' and 
              down_fifo_push = '0' and down_fifo_pop = '0'
         report "Up fifo should be taking data" severity error;
@@ -75,8 +67,6 @@ begin
     -- Here we read the first cell of the bottom inner, but we're still pushing
     -- from the last read of the top
     CYCLE;
-    assert write_enable = '0'
-      report "Write should be disabled" severity error;
     assert up_fifo_push = '1' and up_fifo_pop = '0' and 
            down_fifo_push = '0' and down_fifo_pop = '0'
       report "Up fifo should be taking data" severity error;
@@ -85,8 +75,6 @@ begin
 
     for i in 961 to 990 loop
       CYCLE;
-      assert write_enable = '0'
-        report "Write should be disabled" severity error;
       assert up_fifo_push = '0' and up_fifo_pop = '0' and 
              down_fifo_push = '1' and down_fifo_pop = '0'
         report "Down fifo should be taking data" severity error;
@@ -97,8 +85,6 @@ begin
     -- Here we are performing the last read, and pushing from the penultimate read,
     -- and scheduling a pop
     CYCLE;
-    assert write_enable = '0'
-      report "Write should be disabled" severity error;
     assert up_fifo_push = '0' and up_fifo_pop = '1' and 
            down_fifo_push = '1' and down_fifo_pop = '0'
       report "Should be pushing down and popping from up" severity error;
@@ -108,8 +94,6 @@ begin
     -- Here we are performing the first write, and pushing from the final read,
     -- and scheduling a pop
     CYCLE;
-    assert write_enable = '1'
-      report "Write should be enabled" severity error;
     assert up_fifo_push = '0' and up_fifo_pop = '1' and 
            down_fifo_push = '1' and down_fifo_pop = '0'
       report "Should be pushing down and popping from up" severity error;
@@ -118,8 +102,6 @@ begin
 
     for i in 993 to 1022 loop
       CYCLE;
-      assert write_enable = '1'
-        report "Write should be enabled" severity error;
       assert up_fifo_push = '0' and up_fifo_pop = '1' and 
              down_fifo_push = '0' and down_fifo_pop = '0'
         report "Should be popping from the upwards fifo only" severity error;
@@ -131,8 +113,6 @@ begin
     -- Here we write to the last cell in the bottom ghost row, and schedule a pop for the
     -- value of the first ghost cell
     CYCLE;
-    assert write_enable = '1'
-      report "Write should be enabled" severity error;
     assert up_fifo_push = '0' and up_fifo_pop = '0' and 
            down_fifo_push = '0' and down_fifo_pop = '1'
        report "Down fifo should be active" severity error;
@@ -142,8 +122,6 @@ begin
    -- Here we pop and write to the top ghost row
     for i in 0 to 30 loop
       CYCLE;
-      assert write_enable = '1'
-        report "Write should be enabled" severity error;
       assert up_fifo_push = '0' and up_fifo_pop = '0' and 
              down_fifo_push = '0' and down_fifo_pop = '1'
         report "Should be popping from the down fifo only" severity error;
@@ -153,8 +131,6 @@ begin
 
     -- Final write to rhs of top ghost row, should not have any push/pop activity
     CYCLE;
-    assert write_enable = '1'
-      report "Write should be enabled" severity error;
     assert up_fifo_push = '0' and up_fifo_pop = '0' and 
            down_fifo_push = '0' and down_fifo_pop = '0'
       report "FIFOs should be inactive for final write" severity error;
@@ -165,8 +141,6 @@ begin
     -- in the top inner row
     -- The next bits simply prove we go full cycle
     CYCLE;
-    assert write_enable = '0'
-      report "Write should be disabled" severity error;
     assert up_fifo_push = '0' and up_fifo_pop = '0' and 
            down_fifo_push = '0' and down_fifo_pop = '0'
       report "All fifo control signals should be zero" severity error;
@@ -175,8 +149,6 @@ begin
 
     for i in 33 to 63 loop 
       CYCLE;
-      assert write_enable = '0'
-        report "Write should be disabled" severity error;
       assert up_fifo_push = '1' and up_fifo_pop = '0' and 
              down_fifo_push = '0' and down_fifo_pop = '0'
         report "Up fifo should be taking data" severity error;

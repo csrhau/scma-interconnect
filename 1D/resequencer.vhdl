@@ -11,7 +11,6 @@ entity resequencer is
     up_fifo_pop   : out std_logic := '0';
     down_fifo_push: out std_logic := '0';
     down_fifo_pop : out std_logic := '0';
-    write_enable  : out std_logic := '0';
     address       : out std_logic_vector(9 downto 0)
   );
 end entity resequencer;
@@ -31,7 +30,6 @@ begin
       case state is
         when NORTH_INNER => -- Data outflow upwards
           address <= std_logic_vector(to_unsigned(column + 1 * COLS, address'length)); 
-          write_enable <= '0';
           up_fifo_push_s <= '1';
           down_fifo_push_s <= '0';
           if column < 31 then
@@ -42,7 +40,6 @@ begin
           end if;
         when SOUTH_INNER => -- Data outflow downwards
           address <= std_logic_vector(to_unsigned(column + (ROWS-2) * COLS, address'length)); 
-          write_enable <= '0';
           up_fifo_push_s <= '0';
           down_fifo_push_s <= '1';
           if column < 31 then
@@ -56,7 +53,6 @@ begin
           up_fifo_push_s <= '0';
           down_fifo_push_s <= '0';
           address <= std_logic_vector(to_unsigned(column + (ROWS-1) * COLS, address'length)); 
-          write_enable <= '1';
           if column < 31 then
             column <= column + 1;
           else
@@ -68,7 +64,6 @@ begin
           up_fifo_push_s <= '0';
           down_fifo_push_s <= '0';
           address <= std_logic_vector(to_unsigned(column, address'length)); 
-          write_enable <= '1';
           if column < 31 then
             column <= column + 1;
           else
