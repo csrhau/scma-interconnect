@@ -1,4 +1,4 @@
-all: test_fifo.ghw test_ram.ghw test_pe.ghw test_repe.ghw test_integration.ghw test_resequencer.ghw
+all: test_fifo.ghw test_ram.ghw test_repe.ghw test_reintegration.ghw test_errors.ghw test_resequencer.ghw
 
 scma_types.o: scma_types.vhdl
 	ghdl -a $<
@@ -71,8 +71,7 @@ test_repe.ghw: test_repe
 	./$< --wave=$@
 
 
-
-test_integration.o: test_integration.vhdl fifo.o sequencer.o ram.o scma_types.o
+test_integration.o: test_integration.vhdl fifo.o sequencer.o pe.o ram.o scma_types.o
 	ghdl -a $<
 
 test_integration: test_integration.o
@@ -81,6 +80,31 @@ test_integration: test_integration.o
 test_integration.ghw: test_integration
 	./$< --wave=$@
 
+
+test_reintegration.o: test_reintegration.vhdl fifo.o resequencer.o repe.o ram.o scma_types.o
+	ghdl -a $<
+
+test_reintegration: test_reintegration.o
+	ghdl -m $@
+
+test_reintegration.ghw: test_reintegration
+	./$< --wave=$@
+
+
+
+test_errors.o: test_errors.vhdl fifo.o resequencer.o repe.o ram.o scma_types.o
+	ghdl -a $<
+
+test_errors: test_errors.o
+	ghdl -m $@
+
+test_errors.ghw: test_errors
+	./$< --wave=$@
+
+
+
+
+
 clean: 
 	rm -f *.o *.cf *.ghw
 	rm -rf ./test_fifo 
@@ -88,3 +112,5 @@ clean:
 	rm -rf ./test_resequencer
 	rm -rf ./test_integration
 	rm -rf ./test_pe
+	rm -rf ./test_repe
+	rm -rf ./test_reintegration

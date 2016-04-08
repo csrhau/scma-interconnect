@@ -14,7 +14,7 @@ entity rePE is
     address       : in std_logic_vector(9 downto 0);
     down_input    : in std_logic_vector(7 downto 0);   -- The output of the north in fifo
     up_input      : in std_logic_vector(7 downto 0);   -- the output of the south in fifo
-    output        : out std_logic_vector(7 downto 0)
+    output        : out std_logic_vector(7 downto 0) := (others => '0')
   );
 end entity rePE; 
 

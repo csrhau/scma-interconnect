@@ -49,6 +49,8 @@ begin
       report "All fifo control signals should be zero" severity error;
 
     CYCLE;
+    assert enable = '1'
+      report "Self-enables" severity error;
     assert up_fifo_push = '0' and up_fifo_pop = '0' and 
            down_fifo_push = '0' and down_fifo_pop = '0'
       report "All fifo control signals should be zero" severity error;

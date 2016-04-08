@@ -44,14 +44,45 @@ begin
                  port map (clock, enable, down_fifo_pop, up_fifo_pop, address,
                            down_input, up_input, output);
   process
-    procedure CYCLE is
-    begin
-      clock <= '0';
-      wait for 1 ns;
+  begin
+    clock <= '0';
+    enable <= '0';
+    down_fifo_pop <= '0';
+    up_fifo_pop <= '0';
+    address <= (others => '0');
+    down_input <= (others => '0');
+    up_input <= (others => '0');
+
+    wait for 1 ns;
+    enable <= '1';
+
+    for i in 32 to 63 loop
+      address <= std_logic_vector(to_unsigned(i, address'length));
       clock <= '1';
       wait for 1 ns;
-    end procedure;
-  begin
+      clock <= '0';
+      wait for 1 ns;
+    end loop;
+
+    for i in 960 to 990 loop
+      address <= std_logic_vector(to_unsigned(i, address'length));
+      clock <= '1';
+      wait for 1 ns;
+      clock <= '0';
+      wait for 1 ns;
+    end loop;
+
+
+    -- Last cell of south inner, pop while pushing
+    address <= std_logic_vector(to_unsigned(991, address'length));
+    up_fifo_pop <= '1';
+    clock <= '1';
+    wait for 1 ns;
+    clock <= '0';
+    wait for 1 ns;
+
+    -- TODO, really not finished at all.
+
     wait;
   end process;
 end architecture behavioural;
