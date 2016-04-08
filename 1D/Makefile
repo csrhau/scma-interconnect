@@ -1,4 +1,4 @@
-all: test_fifo.ghw test_ram.ghw test_pe.ghw test_pe.ghw test_integration.ghw test_resequencer.ghw
+all: test_fifo.ghw test_ram.ghw test_pe.ghw test_repe.ghw test_integration.ghw test_resequencer.ghw
 
 scma_types.o: scma_types.vhdl
 	ghdl -a $<
@@ -56,6 +56,21 @@ test_pe: test_pe.o
 
 test_pe.ghw: test_pe
 	./$< --wave=$@
+
+
+repe.o: repe.vhdl ram.o scma_types.o
+	ghdl -a $<
+
+test_repe.o: test_repe.vhdl repe.o ram.o scma_types.o test_helpers.o
+	ghdl -a $<
+
+test_repe: test_repe.o
+	ghdl -m $@
+
+test_repe.ghw: test_repe
+	./$< --wave=$@
+
+
 
 test_integration.o: test_integration.vhdl fifo.o sequencer.o ram.o scma_types.o
 	ghdl -a $<

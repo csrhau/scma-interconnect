@@ -8,7 +8,7 @@ entity test_pe is
 end entity test_pe;
 
 architecture behavioural of test_pe is
-  component PE is 
+  component PE is
     generic (
       pe_contents : memory_t := (others => (others => '0'))
     );
@@ -23,7 +23,7 @@ architecture behavioural of test_pe is
       output : out std_logic_vector(7 downto 0)        -- The output to both fifos (gets switched by sequencer)
     );
   end component PE;
-  
+
   constant input_deck : memory_t := ( 0 to 31 => "11111111",
                                       32 to 63 => "00001010",
                                       960 to 991 => "11110101",
@@ -36,12 +36,12 @@ architecture behavioural of test_pe is
   signal seq_address : std_logic_vector(9 downto 0);
   signal seq_orientation : orientation_t;
   signal seq_operation :  operation_t;
-  signal north_input : std_logic_vector(7 downto 0); 
+  signal north_input : std_logic_vector(7 downto 0);
   signal south_input : std_logic_vector(7 downto 0);
   signal output : std_logic_vector(7 downto 0);
 
 begin
-  ELEMENT : PE generic map(pe_contents => input_deck) 
+  ELEMENT : PE generic map(pe_contents => input_deck)
                 port map (clock, enable, seq_address, seq_orientation,
                          seq_operation, north_input, south_input, output);
   process
@@ -59,10 +59,10 @@ begin
     seq_orientation <= NORTH;
     seq_operation <= OUTFLOW;
     for i in 32 to 63 loop
-      seq_address <= std_logic_vector(to_unsigned(i, seq_address'length)); 
+      seq_address <= std_logic_vector(to_unsigned(i, seq_address'length));
       CYCLE;
       assert output = input_deck(i)
-        report "Cycle " & natural'image(i) & " Expected: " & str(input_deck(i)) 
+        report "Cycle " & natural'image(i) & " Expected: " & str(input_deck(i))
                                            & " Received: " & str(output)
         severity error;
     end loop;
@@ -71,10 +71,10 @@ begin
     seq_orientation <= SOUTH;
     seq_operation <= OUTFLOW;
     for i in 960 to 991 loop
-      seq_address <= std_logic_vector(to_unsigned(i, seq_address'length)); 
+      seq_address <= std_logic_vector(to_unsigned(i, seq_address'length));
       CYCLE;
       assert output = input_deck(i)
-        report "Cycle " & natural'image(i) & " Expected: " & str(input_deck(i)) 
+        report "Cycle " & natural'image(i) & " Expected: " & str(input_deck(i))
                                            & " Received: " & str(output)
         severity error;
     end loop;
@@ -84,17 +84,17 @@ begin
     seq_orientation <= NORTH;
     seq_operation <= INFLOW;
     for i in 0 to 31 loop
-      seq_address <= std_logic_vector(to_unsigned(i, seq_address'length)); 
-      north_input <= std_logic_vector(to_unsigned(i, north_input'length)); 
+      seq_address <= std_logic_vector(to_unsigned(i, seq_address'length));
+      north_input <= std_logic_vector(to_unsigned(i, north_input'length));
       CYCLE;
     end loop;
-    
+
     -- SOUTH INFLOW: Should write to storage(992 to 1023)
     north_input <= "XXXXXXXX";
     seq_orientation <= SOUTH;
     seq_operation <= INFLOW;
     for i in 992 to 1023 loop
-      seq_address <= std_logic_vector(to_unsigned(i, seq_address'length)); 
+      seq_address <= std_logic_vector(to_unsigned(i, seq_address'length));
       south_input <= std_logic_vector(to_unsigned(i-900, south_input'length)); -- -900 prevents overflow
       CYCLE;
     end loop;
@@ -111,9 +111,9 @@ begin
     CYCLE;
     CYCLE;
 
- 
 
-     
+
+
 
     wait;
   end process;
