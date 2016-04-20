@@ -1,0 +1,6 @@
+*.o 
+*.cf
+*.ghw
+
+test_ram
+test_processor
