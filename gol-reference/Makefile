@@ -22,7 +22,7 @@ test_processor: test_processor.o
 	ghdl -m $@
 
 test_processor.ghw: test_processor
-	./$< --wave=$@
+	ghdl -a $<
 
 clean: 
 	rm -f *.o *.cf *.ghw
