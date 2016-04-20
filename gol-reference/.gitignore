@@ -1,0 +1,11 @@
+*.o 
+*.cf
+*.ghw
+
+test_ram
+test_fifo
+test_sequencer
+test_pe
+test_sequencer_fifo_integration
+test_sequencer_pe_integration
+test_integration
