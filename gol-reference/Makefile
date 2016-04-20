@@ -1,4 +1,4 @@
-all: test_ram.ghw test_processor.ghw
+all: test_ram.ghw test_sequencer.ghw
 
 ram.o: ram.vhdl 
 	ghdl -a $<
@@ -12,19 +12,19 @@ test_ram: test_ram.o
 test_ram.ghw: test_ram
 	./$< --wave=$@
 
-processor.o: processor.vhdl 
+sequencer.o: sequencer.vhdl 
 	ghdl -a $<
 
-test_processor.o: test_processor.vhdl processor.o 
+test_sequencer.o: test_sequencer.vhdl sequencer.o 
 	ghdl -a $<
 
-test_processor: test_processor.o
+test_sequencer: test_sequencer.o
 	ghdl -m $@
 
-test_processor.ghw: test_processor
-	ghdl -a $<
+test_sequencer.ghw: test_sequencer
+	./$< --wave=$@
 
 clean: 
 	rm -f *.o *.cf *.ghw
 	rm -rf ./test_ram
-	rm -rf ./test_processor
+	rm -rf ./test_sequencer
