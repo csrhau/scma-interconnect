@@ -3,4 +3,4 @@
 *.ghw
 
 test_ram
-test_processor
+test_sequencer

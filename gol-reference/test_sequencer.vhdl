@@ -29,8 +29,6 @@ begin
   SEQ: sequencer generic map (8, 8)
                  port map(clock, read_address);
 
-
-
   process
   begin
     wait for 1 ns;
