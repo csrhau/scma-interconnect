@@ -1,12 +1,15 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-entity test_ram is
-end test_ram;
+entity test_RAM is
+end test_RAM;
 
-architecture behavioural  of test_ram is
+architecture behavioural  of test_RAM is
 
   component RAM is 
+    generic (
+      filename: string
+    );
     port (
       clock : in std_logic;
       write_enable : in std_logic; 
@@ -16,16 +19,10 @@ architecture behavioural  of test_ram is
     );
   end component RAM;
 
-  
   signal write_enable : std_logic; 
-  signal address  : std_logic_vector(9 downto 0);
+  signal address  : std_logic_vector(5 downto 0); -- large enough to hold 8 by 8 square
   signal data_in  : std_logic_vector(7 downto 0);
   signal data_out : std_logic_vector(7 downto 0);
-
-  -- Just to prove types don't conflict
-  signal address2 : std_logic_vector(5 downto 0);
-  signal data_in2 : std_logic_vector(1 downto 0);
-  signal data_out2 : std_logic_vector(1 downto 0);
 
   signal period: time := 10 ns;
   signal clock : std_logic := '0';
@@ -34,29 +31,28 @@ begin
 
   clock <= not clock after period/2 when finished='0';
 
-  ramcell : RAM port map (clock, write_enable, address, data_in, data_out);
-  ramcell2 : RAM port map (clock, write_enable, address2, data_in2, data_out2);
+  memory : RAM generic map (filename => "glider_8x8.mif")
+                    port map (clock, write_enable, address, data_in, data_out);
   process
   begin
 
-    address <= "0000000000";
-    address2 <= "000000";
-    write_enable <= '1';
+
+    address <= "000000";
+    write_enable <= '0';
     data_in <= "01010101";
-    data_in2 <= "01";
     wait for period;
     assert data_out = "00000000"
-      report "RAM should be zero initialized" severity error;
-
-    write_enable <= '0';
-    data_in <= "11110000";
-    wait for period;
-    assert data_out = "01010101"
-      report "data should have been written and returned" severity error;
+      report "RAM(0) should report 0" severity error;
 
     wait for period;
-    assert data_out = "01010101"
-      report "data should not be overwritten with write_enable false" severity error;
+    assert data_out = "00000000"
+      report "RAM(0) should not take on new values when write disabled" severity error;
+
+    address <= "001010";
+    wait for period;
+    assert data_out = "11111111"
+      report "RAM(10) should hold an alive cell" severity error;
+
 
     finished <= '1';
     wait;
