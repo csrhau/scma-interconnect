@@ -9,7 +9,7 @@ entity sequencer is
   );
   port (
     clock : in std_logic;
-    read_address : out std_logic_vector
+    address : out std_logic_vector
   );
 end entity sequencer;
 
@@ -51,11 +51,11 @@ begin
   begin
     case position is 
       when POS_UPPER =>
-        read_address <= std_logic_vector(to_unsigned((i-1) * cols + j, read_address'length));
+        address <= std_logic_vector(to_unsigned((i-1) * cols + j, address'length));
       when POS_CENTER =>
-        read_address <= std_logic_vector(to_unsigned(i * cols + j, read_address'length));
+        address <= std_logic_vector(to_unsigned(i * cols + j, address'length));
       when POS_LOWER =>
-        read_address <= std_logic_vector(to_unsigned((i+1) * cols + j, read_address'length));
+        address <= std_logic_vector(to_unsigned((i+1) * cols + j, address'length));
     end case;
   end process;
 
