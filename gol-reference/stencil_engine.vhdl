@@ -19,7 +19,7 @@ architecture behavioural of stencil_engine is
 
   type neighbourhood_t is array(0 to 8) of std_logic_vector(input'range);
 
-  impure function popcnt (neighbours: neighbourhood_t) return natural is
+  function popcnt (neighbours: neighbourhood_t) return natural is
     variable result : natural range 0 to neighbours'length := 0;
   begin
     for i in neighbours'range loop

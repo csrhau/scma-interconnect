@@ -17,8 +17,8 @@ architecture behavioural of sequencer is
   type position_t is (POS_UPPER, POS_CENTER, POS_LOWER); 
 
   signal position : position_t := POS_UPPER;
-  signal j : natural range 0 to cols-1 := 0;
   signal i : natural range 1 to rows-2 := 1;
+  signal j : natural range 0 to cols-1 := 0;
 
 begin
   -- ROW I COL J
