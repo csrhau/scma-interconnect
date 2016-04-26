@@ -15,6 +15,7 @@ architecture behavioural of test_sequencer is
     port (
       clock : in std_logic;
       reset : in std_logic;
+      step_complete : out std_logic;
       write_enable : out std_logic;
       read_address : out std_logic_vector;
       write_address : out std_logic_vector
@@ -24,6 +25,7 @@ architecture behavioural of test_sequencer is
   signal period: time := 10 ns;
   signal clock : std_logic := '0';
   signal reset : std_logic := '0';
+  signal step_complete : std_logic;
   signal write_enable : std_logic;
   signal finished : std_logic := '0';
 
@@ -34,7 +36,7 @@ begin
   clock <= not clock after period/2 when finished='0';
 
   SEQ: sequencer generic map (8, 8, 1)
-                 port map(clock, reset, write_enable, read_address, write_address);
+                 port map(clock, reset, step_complete, write_enable, read_address, write_address);
 
   STIMULUS: process
   begin
@@ -186,10 +188,26 @@ begin
     wait for period;
     assert read_address = "111011" report "Should read address 59" severity error;
 
+    wait for period;
+
     -- Reset triggers
-    wait for 2 * period; -- Reset
+    wait for period; -- Reset
     assert read_address = "000000" report "Should read address 0 after reset" severity error;
 
+
+    for i in integer range 0 to 6 * 8 * 3 - 2 loop
+      wait for period;
+      assert step_complete = '0' report "Step should not have completed" severity error;
+    end loop;
+
+
+
+      wait for period;
+      assert step_complete = '1' report "Step should have completed" severity error;
+
+    -- Test the complete thing works
+
+    wait for 9 * 3 * period;
     finished <= '1';
     wait;
   end process RESPONSE; 

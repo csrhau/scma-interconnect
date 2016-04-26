@@ -12,6 +12,7 @@ entity sequencer is
   port (
     clock : in std_logic;
     reset : in std_logic;
+    step_complete : out std_logic;
     write_enable : out std_logic;
     read_address : out std_logic_vector;
     write_address : out std_logic_vector
@@ -30,11 +31,13 @@ begin
   begin
     if rising_edge(clock) then
       if reset = '1' then
+        step_complete <= '0';
         write_enable <= '0';
         offset <= -radius;
         i <= 0;
         j <= 1;
       else
+        step_complete <= '0'; -- Overridden after each frame
         write_enable <= '0'; -- Overridden after each span
         if offset < radius then
           offset <= offset + 1;
@@ -48,6 +51,7 @@ begin
               j <= j + 1;
             else 
               j <= 1;
+              step_complete <= '1';
             end if;
           end if;
           if i > radius then -- Output here
