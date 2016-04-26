@@ -12,8 +12,8 @@ entity sequencer is
   port (
     clock : in std_logic;
     reset : in std_logic;
-    step_complete : out std_logic;
-    write_enable : out std_logic;
+    step_complete : out std_logic := '0';
+    write_enable : out std_logic := '0';
     read_address : out std_logic_vector;
     write_address : out std_logic_vector
   );

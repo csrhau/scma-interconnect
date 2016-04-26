@@ -1,4 +1,4 @@
-all: test_stencil_engine.ghw test_sequencer.ghw test_ram.ghw
+all: test_stencil_engine.ghw test_sequencer.ghw test_ram.ghw test_integration.ghw
 
 
 stencil_engine.o: stencil_engine.vhdl
@@ -37,6 +37,16 @@ test_ram: test_ram.o
 test_ram.ghw: test_ram
 	./$< --wave=$@
 
+test_integration.o: test_integration.vhdl ram.o 
+	ghdl -a $<
+
+test_integration: test_integration.o
+	ghdl -m $@
+
+test_integration.ghw: test_integration
+	./$< --wave=$@
+
+
 
 
 clean: 
@@ -44,3 +54,4 @@ clean:
 	rm -rf ./test_stencil_engine
 	rm -rf ./test_sequencer
 	rm -rf ./test_ram
+	rm -rf ./test_integration
