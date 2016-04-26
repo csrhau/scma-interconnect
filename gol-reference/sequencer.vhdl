@@ -1,6 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use std.textio.all;
 
 entity sequencer is
   generic (
@@ -12,18 +13,20 @@ entity sequencer is
     clock : in std_logic;
     reset : in std_logic;
     write_enable : out std_logic;
-    address : out std_logic_vector
+    read_address : out std_logic_vector;
+    write_address : out std_logic_vector
   );
 end entity sequencer;
 
 architecture behavioural of sequencer is
   -- ROW I COL J 
   signal i      : natural range 0 to rows-1 := 0;
-  signal j      : natural range 1 to cols-2 := 1;
+  signal j      : natural range radius to cols-radius := 1;
   signal offset : natural range -radius to radius := -radius;
 
 begin
   SEQUENTIAL: process (clock)
+    variable outbuff: line;
   begin
     if rising_edge(clock) then
       if reset = '1' then
@@ -37,9 +40,6 @@ begin
           offset <= offset + 1;
         else
           offset <= -radius;
-          if i > radius then
-            write_enable <= '1';
-          end if;
           if i < rows - 1 then
             i <= i + 1;
           else
@@ -50,6 +50,10 @@ begin
               j <= 1;
             end if;
           end if;
+          if i > radius then -- Output here
+            write_address <= std_logic_vector(to_unsigned((i - radius) * cols + j , write_address'length));
+            write_enable <= '1';
+          end if;
         end if;
       end if;
     end if;
@@ -57,7 +61,7 @@ begin
 
   COMBINATORIAL: process(offset, i, j)
   begin
-    address <= std_logic_vector(to_unsigned(i * cols + j + offset, address'length));
+    read_address <= std_logic_vector(to_unsigned(i * cols + j + offset, read_address'length));
   end process;
 
 end architecture behavioural;
