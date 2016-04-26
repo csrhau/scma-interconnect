@@ -31,7 +31,7 @@ begin
 
   clock <= not clock after period/2 when finished='0';
 
-  memory : RAM generic map (filename => "glider_8x8.mif")
+  memory : RAM generic map (filename => "glider_8x8_t0.mif")
                     port map (clock, write_enable, address, data_in, data_out);
   process
   begin
