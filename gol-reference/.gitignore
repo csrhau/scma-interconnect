@@ -2,5 +2,6 @@
 *.cf
 *.ghw
 
+test_ram
 test_sequencer
 test_stencil_engine
