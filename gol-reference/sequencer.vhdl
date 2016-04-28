@@ -30,6 +30,7 @@ begin
     variable outbuff: line;
   begin
     if rising_edge(clock) then
+      write_address <= (write_address'range => '0');
       if reset = '1' then
         step_complete <= '0';
         write_enable <= '0';

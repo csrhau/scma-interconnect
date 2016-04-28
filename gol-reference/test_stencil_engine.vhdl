@@ -27,8 +27,6 @@ architecture behavioural of test_stencil_engine is
   constant ALIVE: std_logic_vector(input'range) := (others => '1');
   constant DEAD: std_logic_vector(input'range) := (others => '0');
 
-
-
 begin
   clock <= not clock after period/2 when finished='0';
   BUFF: stencil_engine port map (clock, enable, input, result);

@@ -34,11 +34,13 @@ architecture behavioural of RAM is
   end function read_file;
 
   signal storage : memory := read_file(filename);
+  signal ready : std_logic := '0';
  begin
+
   process(clock)
   begin
     if rising_edge(clock) then
-      data_out <= storage(to_integer(unsigned(address))); 
+      data_out <= storage(to_integer(to_01(unsigned(address))));  -- to_01 is fugly hack to squash metavalues
       if write_enable = '1' then
         storage(to_integer(unsigned(address))) <= data_in;
       end if;
