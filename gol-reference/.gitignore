@@ -1,10 +1,10 @@
 *.o 
 *.cf
 *.ghw
-
 test_ram
-test_ram_glider
 test_sequencer
+test_ram_glider
 test_stencil_engine
+test_sequencer_glider
 test_stencil_engine_glider
 test_integration
