@@ -21,7 +21,7 @@ architecture behavioural  of test_RAM_glider is
   end component RAM;
 
   signal write_enable : std_logic; 
-  signal address  : std_logic_vector(5 downto 0); -- large enough to hold 8 by 8 square
+  signal read_address  : std_logic_vector(5 downto 0); -- large enough to hold 8 by 8 square
   signal data_in  : std_logic_vector(7 downto 0);
   signal data_out : std_logic_vector(7 downto 0);
 
@@ -36,211 +36,210 @@ begin
 
   clock <= not clock after period/2 when finished='0';
 
-  memory : RAM generic map (filename => "glider_8x8_t0.mif")
-                    port map (clock, write_enable, address, data_in, data_out);
-
+  memory_a : RAM generic map (filename => "glider_8x8_t0.mif")
+                    port map (clock, write_enable, read_address, data_in, data_out);
 
   STIMULUS: process
   begin
     write_enable <= '0';
 
     -- Col 1
-    address <= std_logic_vector(to_unsigned(0, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(1, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(2, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(0, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(1, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(2, read_address'length)); wait for period;
     
-    address <= std_logic_vector(to_unsigned(8, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(9, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(10, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(8, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(9, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(10, read_address'length)); wait for period;
     
-    address <= std_logic_vector(to_unsigned(16, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(17, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(18, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(16, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(17, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(18, read_address'length)); wait for period;
 
-    address <= std_logic_vector(to_unsigned(24, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(25, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(26, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(24, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(25, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(26, read_address'length)); wait for period;
 
-    address <= std_logic_vector(to_unsigned(32, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(33, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(34, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(32, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(33, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(34, read_address'length)); wait for period;
    
-    address <= std_logic_vector(to_unsigned(40, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(41, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(42, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(40, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(41, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(42, read_address'length)); wait for period;
 
-    address <= std_logic_vector(to_unsigned(48, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(49, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(50, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(48, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(49, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(50, read_address'length)); wait for period;
 
-    address <= std_logic_vector(to_unsigned(56, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(57, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(58, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(56, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(57, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(58, read_address'length)); wait for period;
 
     -- Col 2
-    address <= std_logic_vector(to_unsigned(1, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(2, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(3, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(1, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(2, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(3, read_address'length)); wait for period;
     
-    address <= std_logic_vector(to_unsigned(9, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(10, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(11, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(9, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(10, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(11, read_address'length)); wait for period;
     
-    address <= std_logic_vector(to_unsigned(17, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(18, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(19, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(17, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(18, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(19, read_address'length)); wait for period;
 
-    address <= std_logic_vector(to_unsigned(25, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(26, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(27, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(25, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(26, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(27, read_address'length)); wait for period;
 
-    address <= std_logic_vector(to_unsigned(33, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(34, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(35, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(33, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(34, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(35, read_address'length)); wait for period;
    
-    address <= std_logic_vector(to_unsigned(41, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(42, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(43, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(41, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(42, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(43, read_address'length)); wait for period;
 
-    address <= std_logic_vector(to_unsigned(49, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(50, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(51, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(49, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(50, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(51, read_address'length)); wait for period;
 
-    address <= std_logic_vector(to_unsigned(57, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(58, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(59, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(57, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(58, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(59, read_address'length)); wait for period;
 
     -- Col 3
-    address <= std_logic_vector(to_unsigned(2, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(3, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(4, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(2, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(3, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(4, read_address'length)); wait for period;
     
-    address <= std_logic_vector(to_unsigned(10, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(11, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(12, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(10, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(11, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(12, read_address'length)); wait for period;
     
-    address <= std_logic_vector(to_unsigned(18, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(19, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(20, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(18, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(19, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(20, read_address'length)); wait for period;
 
-    address <= std_logic_vector(to_unsigned(26, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(27, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(28, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(26, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(27, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(28, read_address'length)); wait for period;
 
-    address <= std_logic_vector(to_unsigned(34, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(35, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(36, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(34, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(35, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(36, read_address'length)); wait for period;
    
-    address <= std_logic_vector(to_unsigned(42, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(43, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(44, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(42, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(43, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(44, read_address'length)); wait for period;
 
-    address <= std_logic_vector(to_unsigned(50, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(51, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(52, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(50, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(51, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(52, read_address'length)); wait for period;
 
-    address <= std_logic_vector(to_unsigned(58, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(59, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(60, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(58, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(59, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(60, read_address'length)); wait for period;
 
     -- Col 4
-    address <= std_logic_vector(to_unsigned(3, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(4, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(5, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(3, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(4, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(5, read_address'length)); wait for period;
     
-    address <= std_logic_vector(to_unsigned(11, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(12, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(13, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(11, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(12, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(13, read_address'length)); wait for period;
     
-    address <= std_logic_vector(to_unsigned(19, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(20, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(21, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(19, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(20, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(21, read_address'length)); wait for period;
 
-    address <= std_logic_vector(to_unsigned(27, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(28, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(29, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(27, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(28, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(29, read_address'length)); wait for period;
 
-    address <= std_logic_vector(to_unsigned(35, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(36, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(37, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(35, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(36, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(37, read_address'length)); wait for period;
    
-    address <= std_logic_vector(to_unsigned(43, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(44, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(45, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(43, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(44, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(45, read_address'length)); wait for period;
 
-    address <= std_logic_vector(to_unsigned(51, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(52, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(53, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(51, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(52, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(53, read_address'length)); wait for period;
 
-    address <= std_logic_vector(to_unsigned(59, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(60, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(61, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(59, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(60, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(61, read_address'length)); wait for period;
 
     -- Col 5
-    address <= std_logic_vector(to_unsigned(4, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(5, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(6, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(4, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(5, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(6, read_address'length)); wait for period;
     
-    address <= std_logic_vector(to_unsigned(12, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(13, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(14, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(12, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(13, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(14, read_address'length)); wait for period;
     
-    address <= std_logic_vector(to_unsigned(20, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(21, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(22, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(20, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(21, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(22, read_address'length)); wait for period;
 
-    address <= std_logic_vector(to_unsigned(28, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(29, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(30, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(28, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(29, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(30, read_address'length)); wait for period;
 
-    address <= std_logic_vector(to_unsigned(36, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(37, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(38, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(36, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(37, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(38, read_address'length)); wait for period;
    
-    address <= std_logic_vector(to_unsigned(44, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(45, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(46, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(44, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(45, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(46, read_address'length)); wait for period;
 
-    address <= std_logic_vector(to_unsigned(52, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(53, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(54, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(52, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(53, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(54, read_address'length)); wait for period;
 
-    address <= std_logic_vector(to_unsigned(60, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(61, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(62, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(60, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(61, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(62, read_address'length)); wait for period;
 
     -- Col 5
-    address <= std_logic_vector(to_unsigned(5, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(6, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(7, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(5, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(6, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(7, read_address'length)); wait for period;
     
-    address <= std_logic_vector(to_unsigned(13, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(14, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(15, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(13, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(14, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(15, read_address'length)); wait for period;
     
-    address <= std_logic_vector(to_unsigned(21, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(22, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(23, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(21, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(22, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(23, read_address'length)); wait for period;
 
-    address <= std_logic_vector(to_unsigned(29, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(30, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(31, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(29, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(30, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(31, read_address'length)); wait for period;
 
-    address <= std_logic_vector(to_unsigned(37, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(38, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(39, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(37, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(38, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(39, read_address'length)); wait for period;
    
-    address <= std_logic_vector(to_unsigned(45, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(46, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(47, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(45, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(46, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(47, read_address'length)); wait for period;
 
-    address <= std_logic_vector(to_unsigned(53, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(54, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(55, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(53, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(54, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(55, read_address'length)); wait for period;
 
-    address <= std_logic_vector(to_unsigned(61, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(62, address'length)); wait for period;
-    address <= std_logic_vector(to_unsigned(63, address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(61, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(62, read_address'length)); wait for period;
+    read_address <= std_logic_vector(to_unsigned(63, read_address'length)); wait for period;
 
     finished <= '1';
     wait;
