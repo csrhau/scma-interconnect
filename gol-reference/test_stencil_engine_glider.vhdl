@@ -164,8 +164,6 @@ begin
     wait for 3 * period;
     assert result = DEAD report "6,3 should be dead" severity error; 
 
-
     wait;
   end process RESPONSE;
-
 end behavioural;
