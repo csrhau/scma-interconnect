@@ -35,8 +35,6 @@ begin
                     port map (clock, write_enable, address, data_in, data_out);
   process
   begin
-
-
     address <= "000000";
     write_enable <= '0';
     data_in <= "01010101";

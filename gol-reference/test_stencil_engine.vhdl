@@ -102,9 +102,6 @@ begin
     wait for period;
     assert result = DEAD report "7 life => dead" severity error;
 
-
-
-
     finished <= '1';
     wait;
   end process;

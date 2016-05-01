@@ -1,5 +1,4 @@
-all: test_stencil_engine.ghw test_sequencer.ghw test_ram.ghw test_integration.ghw
-
+all: test_stencil_engine.ghw test_stencil_engine_glider.ghw test_sequencer.ghw test_ram.ghw test_integration.ghw
 
 stencil_engine.o: stencil_engine.vhdl
 	ghdl -a $<
@@ -12,6 +11,18 @@ test_stencil_engine: test_stencil_engine.o
 
 test_stencil_engine.ghw: test_stencil_engine
 	./$< --wave=$@
+
+
+test_stencil_engine_glider.o: test_stencil_engine_glider.vhdl stencil_engine.o
+	ghdl -a $<
+
+test_stencil_engine_glider: test_stencil_engine_glider.o
+	ghdl -m $@
+
+test_stencil_engine_glider.ghw: test_stencil_engine_glider
+	./$< --wave=$@
+
+
 
 sequencer.o: sequencer.vhdl 
 	ghdl -a $<
@@ -37,7 +48,11 @@ test_ram: test_ram.o
 test_ram.ghw: test_ram
 	./$< --wave=$@
 
-test_integration.o: test_integration.vhdl ram.o 
+
+test_utils.o: test_utils.vhdl
+	ghdl -a $<
+
+test_integration.o: test_integration.vhdl ram.o sequencer.o stencil_engine.o test_utils.o
 	ghdl -a $<
 
 test_integration: test_integration.o
@@ -52,6 +67,7 @@ test_integration.ghw: test_integration
 clean: 
 	rm -f *.o *.cf *.ghw
 	rm -rf ./test_stencil_engine
+	rm -rf ./test_stencil_engine_glider
 	rm -rf ./test_sequencer
 	rm -rf ./test_ram
 	rm -rf ./test_integration

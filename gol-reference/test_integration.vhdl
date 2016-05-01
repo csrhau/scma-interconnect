@@ -1,6 +1,8 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use work.test_utils.all;
+use std.textio.all;
 
 entity test_integration is
 end test_integration;
@@ -83,7 +85,7 @@ begin
   write_enable_b_meta <= write_enable_b when test = '0' else '0';
 
   seq : sequencer generic map (8, 8, 1)
-                  port map (clock, reset, step_complete, step_complete, address_a, address_b);
+                  port map (clock, reset, step_complete, write_enable_b, address_a, address_b);
 
   -- From a to b
   memory_a : RAM generic map (filename => "glider_8x8_t0.mif")
@@ -105,14 +107,11 @@ begin
     wait for period;
     reset <= '0';
     wait for 3 * 8 * 6 * period;
-
-    
-
-
     wait;
   end process STIMULUS;
 
   RESPONSE: process
+    variable outbuff: line;
   begin
     wait for period;
     -- Reset
@@ -120,13 +119,61 @@ begin
     test <= '1';
     wait for period;
 
-
     for i in 0 to 63 loop
       test_address <= std_logic_vector(to_unsigned(i, test_address'length)); 
       wait for period;
-      assert test_data = "00000000" report "Should match the testcase at " & natural'image(i) severity error;
+      assert data_out_b =test_data
+        report "Result " & slv2str(data_out_b) & " Should match the testcase " 
+                         & slv2str(test_data) & " at " & natural'image(i)
+        severity error;
     end loop;
 
+
+    for i in 0 to 7 loop
+      for j in 0 to 7 loop
+        test_address <= std_logic_vector(to_unsigned(i * 8 + j, test_address'length)); 
+        wait for period;
+        if data_out_a(0) = '0' then
+          write(outbuff, 0);
+        else
+          write(outbuff, 1);
+        end if;
+      end loop;
+      writeline(output, outbuff);
+    end loop;
+
+
+
+    write(outbuff, ' ');
+    writeline(output, outbuff);
+
+    for i in 0 to 7 loop
+      for j in 0 to 7 loop
+        test_address <= std_logic_vector(to_unsigned(i * 8 + j, test_address'length)); 
+        wait for period;
+        if test_data(0) = '0' then
+          write(outbuff, 0);
+        else
+          write(outbuff, 1);
+        end if;
+      end loop;
+      writeline(output, outbuff);
+    end loop;
+
+    write(outbuff, ' ');
+    writeline(output, outbuff);
+    for i in 0 to 7 loop
+      for j in 0 to 7 loop
+        test_address <= std_logic_vector(to_unsigned(i * 8 + j, test_address'length)); 
+        wait for period;
+        if data_out_b(0) = '0' then
+          write(outbuff, 0);
+        else
+          write(outbuff, 1);
+        end if;
+      end loop;
+      writeline(output, outbuff);
+    end loop;
 
     finished <= '1';
     wait;
