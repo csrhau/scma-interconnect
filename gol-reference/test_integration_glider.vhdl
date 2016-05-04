@@ -61,6 +61,9 @@ architecture behavioural  of test_integration_glider is
   signal data_in_b  : std_logic_vector(7 downto 0);
   signal data_out_b : std_logic_vector(7 downto 0);
 
+  signal sequencer_seventeen : std_logic := '0';
+  signal engine_seventeen : std_logic := '0';
+  signal expect_alive : std_logic := '0';
 
   constant ALIVE: std_logic_vector(data_out_a'range) := (others => '1');
   constant DEAD: std_logic_vector(data_out_a'range) := (others => '0');
@@ -73,6 +76,8 @@ begin
   memory_a : RAM generic map (filename => "glider_8x8_t0.mif")
                     port map (clock, '0', read_address, data_in_a, data_out_a);
 
+  memory_b : RAM generic map (filename => "blank_8x8.mif")
+                    port map (clock, write_enable, write_address, data_in_b, data_out_b);
   engine: stencil_engine port map (clock, '1', data_out_a, data_in_b);
 
   STIMULUS: process
@@ -84,6 +89,85 @@ begin
     finished <= '1';
     wait;
   end process STIMULUS;
+
+  ALL_RESPONSE: process
+  begin
+    wait for period; -- Reset
+    assert write_enable = '0' report "Shouldn't be on a write cycle" severity error;
+    assert read_address = std_logic_vector(to_unsigned(0, read_address'length))
+      report "Read address mismatch" severity error;
+    wait for period; 
+    assert write_enable = '0' report "Shouldn't be on a write cycle" severity error;
+    assert read_address = std_logic_vector(to_unsigned(1, read_address'length))
+      report "Read address mismatch" severity error;
+    wait for period; 
+    assert write_enable = '0' report "Shouldn't be on a write cycle" severity error;
+    assert read_address = std_logic_vector(to_unsigned(2, read_address'length))
+      report "Read address mismatch" severity error;
+    
+    wait for period; 
+    assert write_enable = '0' report "Shouldn't be on a write cycle" severity error;
+    assert read_address = std_logic_vector(to_unsigned(8, read_address'length))
+      report "Read address mismatch" severity error;
+    wait for period; 
+    assert write_enable = '0' report "Shouldn't be on a write cycle" severity error;
+    assert read_address = std_logic_vector(to_unsigned(9, read_address'length))
+      report "Read address mismatch" severity error;
+    wait for period; 
+    assert write_enable = '0' report "Shouldn't be on a write cycle" severity error;
+    assert read_address = std_logic_vector(to_unsigned(10, read_address'length))
+      report "Read address mismatch" severity error;
+    
+    wait for period; 
+    assert write_enable = '0' report "Shouldn't be on a write cycle" severity error;
+    assert read_address = std_logic_vector(to_unsigned(16, read_address'length))
+      report "Read address mismatch" severity error;
+    wait for period; 
+    assert write_enable = '0' report "Shouldn't be on a write cycle" severity error;
+    assert read_address = std_logic_vector(to_unsigned(17, read_address'length))
+      report "Read address mismatch" severity error;
+    wait for period; 
+    assert write_enable = '0' report "Shouldn't be on a write cycle" severity error;
+    assert read_address = std_logic_vector(to_unsigned(18, read_address'length))
+      report "Read address mismatch" severity error;
+
+    wait for period; 
+    assert data_in_b = DEAD report "Processor should return DEAD" severity error;
+    assert write_enable = '1' report "Should be on a write cycle" severity error;
+    assert write_address = std_logic_vector(to_unsigned(9, write_address'length))
+      report "Write address mismatch" severity error;
+    assert read_address = std_logic_vector(to_unsigned(24, read_address'length))
+      report "Read address mismatch" severity error;
+    wait for period; 
+    assert write_enable = '0' report "Shouldn't be on a write cycle" severity error;
+    assert read_address = std_logic_vector(to_unsigned(25, read_address'length))
+      report "Read address mismatch" severity error;
+    wait for period; 
+    assert write_enable = '0' report "Shouldn't be on a write cycle" severity error;
+    assert read_address = std_logic_vector(to_unsigned(26, read_address'length))
+      report "Read address mismatch" severity error;
+
+    wait for period; 
+    expect_alive <= '1';
+    assert data_in_b = ALIVE report "Processor should return ALIVE" severity error;
+    assert write_enable = '1' report "Should be on a write cycle" severity error;
+    assert write_address = std_logic_vector(to_unsigned(17, write_address'length)) -- Should write a 1
+      report "Write address mismatch" severity error;
+    assert read_address = std_logic_vector(to_unsigned(32, read_address'length))
+      report "Read address mismatch" severity error;
+    wait for period; 
+    assert write_enable = '0' report "Shouldn't be on a write cycle" severity error;
+    assert read_address = std_logic_vector(to_unsigned(33, read_address'length))
+      report "Read address mismatch" severity error;
+    wait for period; 
+    assert write_enable = '0' report "Shouldn't be on a write cycle" severity error;
+    assert read_address = std_logic_vector(to_unsigned(34, read_address'length))
+      report "Read address mismatch" severity error;
+ 
+    wait;
+  end process ALL_RESPONSE;
+
+
 
   READ_MEMORY_A_RESPONSE: process
   begin
@@ -829,6 +913,7 @@ begin
       report "Write address mismatch" severity error;
     -- Read row 3, write 2,1
     wait for 3 * period; 
+    sequencer_seventeen <= '1';
     assert write_enable = '1' report "Should be on a write cycle" severity error;
     assert write_address = std_logic_vector(to_unsigned(17, write_address'length))
       report "Write address mismatch" severity error;
@@ -1056,6 +1141,7 @@ begin
     wait for 9 * period;
     assert data_in_b = DEAD report "1,1 should be dead" severity error; 
     wait for 3 * period;
+    engine_seventeen <= '1';
     assert data_in_b = ALIVE report "2,1 should be alive" severity error; 
     wait for 3 * period;
     assert data_in_b = DEAD report "3,1 should be dead" severity error; 

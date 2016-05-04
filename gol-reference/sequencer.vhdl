@@ -25,21 +25,27 @@ architecture behavioural of sequencer is
   signal j      : natural range radius to cols-radius := 1;
   signal offset : natural range -radius to radius := -radius;
 
+  signal write_enable_s : std_logic;
+  signal write_address_s : std_logic_vector(write_address'range) := (others => '0');
+
+
 begin
   SEQUENTIAL: process (clock)
     variable outbuff: line;
   begin
     if rising_edge(clock) then
-      write_address <= (write_address'range => '0');
+      write_address <= write_address_s;
+      write_enable <= write_enable_s;
       if reset = '1' then
         step_complete <= '0';
+        write_enable_s <= '0';
         write_enable <= '0';
         offset <= -radius;
         i <= 0;
         j <= 1;
       else
         step_complete <= '0'; -- Overridden after each frame
-        write_enable <= '0'; -- Overridden after each span
+        write_enable_s <= '0'; -- Overridden after each span
         if offset < radius then
           offset <= offset + 1;
         else
@@ -56,8 +62,8 @@ begin
             end if;
           end if;
           if i > radius then -- Output here
-            write_address <= std_logic_vector(to_unsigned((i - radius) * cols + j , write_address'length));
-            write_enable <= '1';
+            write_address_s <= std_logic_vector(to_unsigned((i - radius) * cols + j , write_address'length));
+            write_enable_s <= '1';
           end if;
         end if;
       end if;

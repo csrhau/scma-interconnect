@@ -60,7 +60,6 @@ architecture behavioural of stencil_engine is
   signal neighbourhood : neighbourhood_t := (others => (others => '0'));
   signal head : std_logic_vector(ADDR_BITS-1 downto 0) := (others => '0');
 
-
 begin
   SEQUENTIAL: process(clock)
   begin
