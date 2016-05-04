@@ -54,7 +54,7 @@ test_ram: test_ram.o
 test_ram.ghw: test_ram
 	./$< --wave=$@
 
-test_ram_glider.o: test_ram_glider.vhdl ram.o 
+test_ram_glider.o: test_ram_glider.vhdl ram.o test_utils.o
 	ghdl -a $<
 
 test_ram_glider: test_ram_glider.o
