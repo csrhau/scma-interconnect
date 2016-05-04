@@ -88,14 +88,15 @@ begin
     assert write_enable = '0' report "No result should be written" severity error;
     assert read_address = "010010" report "Should read address 18" severity error;
 
-    -- Here we have filled our buffer, so expect a result on the next cycle
+
      -- Row 3
+    wait for period;
+    assert write_enable = '0' report "No result should be written" severity error;
+    -- Here we have filled our buffer, so expect a result on the next cycle
+    assert read_address = "011000" report "Should read address 24" severity error;
     wait for period;
     assert write_enable = '1' report "First result should be written now" severity error;
     assert write_address = "001001" report "Result should be written to address 9" severity error;
-    assert read_address = "011000" report "Should read address 24" severity error;
-    wait for period;
-    assert write_enable = '0' report "No result should be written" severity error;
     assert read_address = "011001" report "Should read address 25" severity error;
     wait for period;
     assert write_enable = '0' report "No result should be written" severity error;
@@ -103,11 +104,11 @@ begin
 
     -- Row 4
     wait for period;
-    assert write_enable = '1' report "First result should be written now" severity error;
-    assert write_address = "010001" report "Result should be written to address 17" severity error;
+    assert write_enable = '0' report "No result should be written" severity error;
     assert read_address = "100000" report "Should read address 32" severity error;
     wait for period;
-    assert write_enable = '0' report "No result should be written" severity error;
+    assert write_enable = '1' report "First result should be written now" severity error;
+    assert write_address = "010001" report "Result should be written to address 17" severity error;
     assert read_address = "100001" report "Should read address 33" severity error;
     wait for period;
     assert write_enable = '0' report "No result should be written" severity error;
@@ -120,11 +121,11 @@ begin
 
     -- Row 7 - Last row
     wait for period;
-    assert write_enable = '1' report "result should be written now" severity error;
-    assert write_address = "101001" report "Result should be written to address 41" severity error;
+    assert write_enable = '0' report "No result should be written" severity error;
     assert read_address = "111000" report "Should read address 56" severity error;
     wait for period;
-    assert write_enable = '0' report "No result should be written" severity error;
+    assert write_enable = '1' report "result should be written now" severity error;
+    assert write_address = "101001" report "Result should be written to address 41" severity error;
     assert read_address = "111001" report "Should read address 57" severity error;
     wait for period;
     assert write_enable = '0' report "No result should be written" severity error;
@@ -132,11 +133,11 @@ begin
 
     -- Row 0, Cols 1,2,3
     wait for period;
-    assert write_enable = '1' report "last result should be written now" severity error;
-    assert write_address = "110001" report "Result should be written to address 49" severity error;
+    assert write_enable = '0' report "No result should be written" severity error;
     assert read_address = "000001" report "Should read address 1" severity error;
     wait for period;
-    assert write_enable = '0' report "No result should be written" severity error;
+    assert write_enable = '1' report "last result should be written now" severity error;
+    assert write_address = "110001" report "Result should be written to address 49" severity error;
     assert read_address = "000010" report "Should read address 2" severity error;
     wait for period;
     assert write_enable = '0' report "No result should be written" severity error;
@@ -166,11 +167,11 @@ begin
 
     -- Row 3, cols 1,2,3
     wait for period;
-    assert write_enable = '1' report "result should be written now" severity error;
-    assert write_address = "001010" report "Result should be written to address 10" severity error;
+    assert write_enable = '0' report "No result should be written" severity error;
     assert read_address = "011001" report "Should read address 25" severity error;
     wait for period;
-    assert write_enable = '0' report "No result should be written" severity error;
+    assert write_enable = '1' report "result should be written now" severity error;
+    assert write_address = "001010" report "Result should be written to address 10" severity error;
     assert read_address = "011010" report "Should read address 26" severity error;
     wait for period;
     assert write_enable = '0' report "No result should be written" severity error;
@@ -200,10 +201,8 @@ begin
       assert step_complete = '0' report "Step should not have completed" severity error;
     end loop;
 
-
-
-      wait for period;
-      assert step_complete = '1' report "Step should have completed" severity error;
+    wait for 2 *  period;
+    assert step_complete = '1' report "Step should have completed" severity error;
 
     -- Test the complete thing works
 

@@ -550,69 +550,73 @@ begin
     -- Read row 1, no write
     wait for 3 * period; -- Read 0x08, 0x09, 0x0A
     assert write_enable = '0' report "Shouldn't be on a write cycle" severity error;
-    -- Read row 2, write 1,1
+    -- Read row 2
     wait for 3 * period; -- Read 0x10, 0x11, 0x12
+
+    -- Pipeline offset (hence all plus 1)
+    wait for period;
+
     assert write_enable = '1' report "Should be on a write cycle" severity error;
     assert write_address = std_logic_vector(to_unsigned(9, write_address'length))
       report "Write address mismatch" severity error;
-    -- Read row 3, write 2,1
+    -- Read row 3+1, write 2,1
     wait for 3 * period; 
     assert write_enable = '1' report "Should be on a write cycle" severity error;
     assert write_address = std_logic_vector(to_unsigned(17, write_address'length))
       report "Write address mismatch" severity error;
-    -- Read row 4, write 3,1
+    -- Read row 4+1, write 3,1
     wait for 3 * period; 
     assert write_enable = '1' report "Should be on a write cycle" severity error;
     assert write_address = std_logic_vector(to_unsigned(25, write_address'length))
       report "Write address mismatch" severity error;
-    -- Read row 5, write 4,1
+    -- Read row 5+1, write 4,1
     wait for 3 * period; 
     assert write_enable = '1' report "Should be on a write cycle" severity error;
     assert write_address = std_logic_vector(to_unsigned(33, write_address'length))
       report "Write address mismatch" severity error;
-    -- Read row 6, write 5,1
+    -- Read row 6+1, write 5,1
     wait for 3 * period; 
     assert write_enable = '1' report "Should be on a write cycle" severity error;
     assert write_address = std_logic_vector(to_unsigned(41, write_address'length))
       report "Write address mismatch" severity error;
-    -- Read row 7, write 6,1
+    -- Read row 7+1, write 6,1
     wait for 3 * period; 
     assert write_enable = '1' report "Should be on a write cycle" severity error;
     assert write_address = std_logic_vector(to_unsigned(49, write_address'length))
       report "Write address mismatch" severity error;
 
     -- Col 2
-    -- Read row 0, no write
+    -- Read row 0+1, no write
     wait for 3 * period;
     assert write_enable = '0' report "Shouldn't be on a write cycle" severity error;
-    -- Read row 1, no write
+    -- Read row 1+1, no write
     wait for 3 * period;
     assert write_enable = '0' report "Shouldn't be on a write cycle" severity error;
-    -- Read row 2, write 1,2
+    -- Read row 2+1, write 1,2
     wait for 3 * period;
     assert write_enable = '1' report "Should be on a write cycle" severity error;
     assert write_address = std_logic_vector(to_unsigned(10, write_address'length))
       report "Write address mismatch" severity error;
-    -- Read row 3, write 2,2
+    -- Read row 3+1, write 2,2
     wait for 3 * period;
     assert write_enable = '1' report "Should be on a write cycle" severity error;
     assert write_address = std_logic_vector(to_unsigned(18, write_address'length))
       report "Write address mismatch" severity error;
-    -- Read row 4, write 3,2
+    -- Read row 4+1, write 3,2
     wait for 3 * period;
     assert write_enable = '1' report "Should be on a write cycle" severity error;
     assert write_address = std_logic_vector(to_unsigned(26, write_address'length)) report "Write address mismatch" severity error;
-    -- Read row 5, write 4,2
+    -- Read row 5+1, write 4,2
     wait for 3 * period;
     assert write_enable = '1' report "Should be on a write cycle" severity error;
     assert write_address = std_logic_vector(to_unsigned(34, write_address'length))
       report "Write address mismatch" severity error;
-    -- Read row 6, write 5,2
+    -- Read row 6+1, write 5,2
     wait for 3 * period;
     assert write_enable = '1' report "Should be on a write cycle" severity error;
     assert write_address = std_logic_vector(to_unsigned(42, write_address'length))
       report "Write address mismatch" severity error;
-    -- Read row 7, write 6,2
+    -- Read row 7+1, write 6,2
     wait for 3 * period;
     assert write_enable = '1' report "Should be on a write cycle" severity error;
     assert write_address = std_logic_vector(to_unsigned(50, write_address'length))
@@ -630,27 +634,27 @@ begin
     assert write_enable = '1' report "Should be on a write cycle" severity error;
     assert write_address = std_logic_vector(to_unsigned(11, write_address'length))
       report "Write address mismatch" severity error;
-    -- Read row 3, write 2,3
+    -- Read row 3+1, write 2,3
     wait for 3 * period;
     assert write_enable = '1' report "Should be on a write cycle" severity error;
     assert write_address = std_logic_vector(to_unsigned(19, write_address'length))
       report "Write address mismatch" severity error;
-    -- Read row 4, write 3,3
+    -- Read row 4+1, write 3,3
     wait for 3 * period;
     assert write_enable = '1' report "Should be on a write cycle" severity error;
     assert write_address = std_logic_vector(to_unsigned(27, write_address'length))
       report "Write address mismatch" severity error;
-    -- Read row 5, write 4,3
+    -- Read row 5+1, write 4,3
     wait for 3 * period;
     assert write_enable = '1' report "Should be on a write cycle" severity error;
     assert write_address = std_logic_vector(to_unsigned(35, write_address'length))
       report "Write address mismatch" severity error;
-    -- Read row 6, write 5,3
+    -- Read row 6+1, write 5,3
     wait for 3 * period;
     assert write_enable = '1' report "Should be on a write cycle" severity error;
     assert write_address = std_logic_vector(to_unsigned(43, write_address'length))
       report "Write address mismatch" severity error;
-    -- Read row 7, write 6,3
+    -- Read row 7+1, write 6,3
     wait for 3 * period;
     assert write_enable = '1' report "Should be on a write cycle" severity error;
     assert write_address = std_logic_vector(to_unsigned(51, write_address'length))
@@ -668,27 +672,27 @@ begin
     assert write_enable = '1' report "Should be on a write cycle" severity error;
     assert write_address = std_logic_vector(to_unsigned(12, write_address'length))
       report "Write address mismatch" severity error;
-    -- Read row 3, write 2,4
+    -- Read row 3+1, write 2,4
     wait for 3 * period;
     assert write_enable = '1' report "Should be on a write cycle" severity error;
     assert write_address = std_logic_vector(to_unsigned(20, write_address'length))
       report "Write address mismatch" severity error;
-    -- Read row 4, write 3,4
+    -- Read row 4+1, write 3,4
     wait for 3 * period;
     assert write_enable = '1' report "Should be on a write cycle" severity error;
     assert write_address = std_logic_vector(to_unsigned(28, write_address'length))
       report "Write address mismatch" severity error;
-    -- Read row 5, write 4,4
+    -- Read row 5+1, write 4,4
     wait for 3 * period;
     assert write_enable = '1' report "Should be on a write cycle" severity error;
     assert write_address = std_logic_vector(to_unsigned(36, write_address'length))
       report "Write address mismatch" severity error;
-    -- Read row 6, write 5,4
+    -- Read row 6+1, write 5,4
     wait for 3 * period;
     assert write_enable = '1' report "Should be on a write cycle" severity error;
     assert write_address = std_logic_vector(to_unsigned(44, write_address'length))
       report "Write address mismatch" severity error;
-    -- Read row 7, write 6,4
+    -- Read row 7+1, write 6,4
     wait for 3 * period;
     assert write_enable = '1' report "Should be on a write cycle" severity error;
     assert write_address = std_logic_vector(to_unsigned(52, write_address'length))
@@ -706,27 +710,27 @@ begin
     assert write_enable = '1' report "Should be on a write cycle" severity error;
     assert write_address = std_logic_vector(to_unsigned(13, write_address'length))
       report "Write address mismatch" severity error;
-    -- Read row 3, write 2,5
+    -- Read row 3+1, write 2,5
     wait for 3 * period;
     assert write_enable = '1' report "Should be on a write cycle" severity error;
     assert write_address = std_logic_vector(to_unsigned(21, write_address'length))
       report "Write address mismatch" severity error;
-    -- Read row 4, write 3,5
+    -- Read row 4+1, write 3,5
     wait for 3 * period;
     assert write_enable = '1' report "Should be on a write cycle" severity error;
     assert write_address = std_logic_vector(to_unsigned(29, write_address'length))
       report "Write address mismatch" severity error;
-    -- Read row 5, write 4,5
+    -- Read row 5+1, write 4,5
     wait for 3 * period;
     assert write_enable = '1' report "Should be on a write cycle" severity error;
     assert write_address = std_logic_vector(to_unsigned(37, write_address'length))
       report "Write address mismatch" severity error;
-    -- Read row 6, write 5,5
+    -- Read row 6+1, write 5,5
     wait for 3 * period;
     assert write_enable = '1' report "Should be on a write cycle" severity error;
     assert write_address = std_logic_vector(to_unsigned(45, write_address'length))
       report "Write address mismatch" severity error;
-    -- Read row 7, write 6,5
+    -- Read row 7+1, write 6,5
     wait for 3 * period;
     assert write_enable = '1' report "Should be on a write cycle" severity error;
     assert write_address = std_logic_vector(to_unsigned(53, write_address'length))
@@ -744,27 +748,27 @@ begin
     assert write_enable = '1' report "Should be on a write cycle" severity error;
     assert write_address = std_logic_vector(to_unsigned(14, write_address'length))
       report "Write address mismatch" severity error;
-    -- Read row 3, write 2,6
+    -- Read row 3+1, write 2,6
     wait for 3 * period;
     assert write_enable = '1' report "Should be on a write cycle" severity error;
     assert write_address = std_logic_vector(to_unsigned(22, write_address'length))
       report "Write address mismatch" severity error;
-    -- Read row 4, write 3,6
+    -- Read row 4+1, write 3,6
     wait for 3 * period;
     assert write_enable = '1' report "Should be on a write cycle" severity error;
     assert write_address = std_logic_vector(to_unsigned(30, write_address'length))
       report "Write address mismatch" severity error;
-    -- Read row 5, write 4,6
+    -- Read row 5+1, write 4,6
     wait for 3 * period;
     assert write_enable = '1' report "Should be on a write cycle" severity error;
     assert write_address = std_logic_vector(to_unsigned(38, write_address'length))
       report "Write address mismatch" severity error;
-    -- Read row 6, write 5,6
+    -- Read row 6+1, write 5,6
     wait for 3 * period;
     assert write_enable = '1' report "Should be on a write cycle" severity error;
     assert write_address = std_logic_vector(to_unsigned(46, write_address'length))
       report "Write address mismatch" severity error;
-    -- Read row 7, write 6,6
+    -- Read row 7+1, write 6,6
     wait for 3 * period;
     assert write_enable = '1' report "Should be on a write cycle" severity error;
     assert write_address = std_logic_vector(to_unsigned(54, write_address'length))
