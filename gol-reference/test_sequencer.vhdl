@@ -195,7 +195,6 @@ begin
     wait for period; -- Reset
     assert read_address = "000000" report "Should read address 0 after reset" severity error;
 
-
     for i in integer range 0 to 6 * 8 * 3 - 2 loop
       wait for period;
       assert step_complete = '0' report "Step should not have completed" severity error;

@@ -20,6 +20,9 @@ entity sequencer is
 end entity sequencer;
 
 architecture behavioural of sequencer is
+
+  type position_t is (LEFT, CENTER, RIGHT);
+
   -- ROW I COL J 
   signal i      : natural range 0 to rows-1 := 0;
   signal j      : natural range radius to cols-radius := 1;
@@ -29,26 +32,17 @@ architecture behavioural of sequencer is
   signal write_enable_s : std_logic := '0';
   signal write_address_s : std_logic_vector(write_address'range) := (others => '0');
 
-
 begin
-  SEQUENTIAL: process (clock)
-    variable outbuff: line;
-  begin
-    if rising_edge(clock) then
-      write_address <= write_address_s;
-      write_enable <= write_enable_s;
-      step_complete <= step_complete_s;
+
+  -- This process looks after the offset/row/column coordinates of the stencil code
+  OIJ_SEQUENTIAL: process (clock)
+  begin 
+    if rising_edge(clock) then 
       if reset = '1' then
-        step_complete_s <= '0';
-        step_complete <= '0';
-        write_enable_s <= '0';
-        write_enable <= '0';
-        offset <= -radius;
+        offset <= - radius;
         i <= 0;
         j <= 1;
       else
-        step_complete_s <= '0'; -- Overridden after each frame
-        write_enable_s <= '0'; -- Overridden after each span
         if offset < radius then
           offset <= offset + 1;
         else
@@ -61,6 +55,31 @@ begin
               j <= j + 1;
             else 
               j <= 1;
+            end if;
+          end if; 
+        end if; 
+      end if;
+    end if;
+  end process OIJ_SEQUENTIAL;
+
+  OUTPUT_SEQUENTIAL: process (clock)
+    variable outbuff: line;
+  begin
+    if rising_edge(clock) then
+      write_address <= write_address_s;
+      write_enable <= write_enable_s;
+      step_complete <= step_complete_s;
+      if reset = '1' then
+        step_complete_s <= '0';
+        step_complete <= '0';
+        write_enable_s <= '0';
+        write_enable <= '0';
+      else
+        step_complete_s <= '0'; -- Overridden after each frame
+        write_enable_s <= '0'; -- Overridden after each span
+        if offset = radius then
+          if i = rows - 1 then
+            if j = cols - 2 then
               step_complete_s <= '1';
             end if;
           end if;
@@ -71,11 +90,11 @@ begin
         end if;
       end if;
     end if;
-  end process;
+  end process OUTPUT_SEQUENTIAL;
 
   COMBINATORIAL: process(offset, i, j)
   begin
     read_address <= std_logic_vector(to_unsigned(i * cols + j + offset, read_address'length));
-  end process;
+  end process COMBINATORIAL;
 
 end architecture behavioural;
