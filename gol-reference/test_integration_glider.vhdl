@@ -56,24 +56,24 @@ architecture behavioural  of test_integration_glider is
   signal read_address : std_logic_vector(5 downto 0);
   signal write_address : std_logic_vector(5 downto 0);
 
-  signal data_in  : std_logic_vector(7 downto 0);
-  signal data_out : std_logic_vector(7 downto 0);
+  signal data_in_a  : std_logic_vector(7 downto 0);
+  signal data_out_a : std_logic_vector(7 downto 0);
+  signal data_in_b  : std_logic_vector(7 downto 0);
+  signal data_out_b : std_logic_vector(7 downto 0);
 
 
-  constant ALIVE: std_logic_vector(data_out'range) := (others => '1');
-  constant DEAD: std_logic_vector(data_out'range) := (others => '0');
+  constant ALIVE: std_logic_vector(data_out_a'range) := (others => '1');
+  constant DEAD: std_logic_vector(data_out_a'range) := (others => '0');
 begin
   clock <= not clock after period/2 when finished='0';
 
   SEQ: sequencer generic map (8, 8, 1)
                  port map(clock, reset, step_complete, write_enable, read_address, write_address);
 
-
   memory_a : RAM generic map (filename => "glider_8x8_t0.mif")
-                    port map (clock, '0', read_address, data_in, data_out);
+                    port map (clock, '0', read_address, data_in_a, data_out_a);
 
-
-
+  engine: stencil_engine port map (clock, '1', data_out_a, data_in_b);
 
   STIMULUS: process
   begin
@@ -85,7 +85,243 @@ begin
     wait;
   end process STIMULUS;
 
-  READ_RESPONSE: process
+  READ_MEMORY_A_RESPONSE: process
+  begin
+    wait for period; -- Reset
+
+    wait for period; -- Pipeline delay
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = ALIVE report "mismatch" severity error; 
+
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = ALIVE report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = ALIVE report "mismatch" severity error; 
+
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+
+    -- Col 2
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = ALIVE report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = ALIVE report "mismatch" severity error; 
+
+    wait for period; 
+    assert data_out_a = ALIVE report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = ALIVE report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = ALIVE report "mismatch" severity error; 
+
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+
+    -- Col 3
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+
+    wait for period; 
+    assert data_out_a = ALIVE report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = ALIVE report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+
+    wait for period; 
+    assert data_out_a = ALIVE report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = ALIVE report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+
+    -- Col 4
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+
+    wait for period; 
+    assert data_out_a = ALIVE report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+
+    wait for period; 
+    assert data_out_a = ALIVE report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+    wait for period; 
+    assert data_out_a = DEAD report "mismatch" severity error; 
+
+    wait;
+  end process READ_MEMORY_A_RESPONSE;
+
+
+  -- More correctly, sequencer response.
+  SEQUENCER_READ_RESPONSE: process
   begin
     wait for period; -- Reset
     assert read_address = std_logic_vector(to_unsigned(0, read_address'length))
@@ -573,9 +809,9 @@ begin
       report "Read address mismatch" severity error;
 
     wait;
-  end process READ_RESPONSE; 
+  end process SEQUENCER_READ_RESPONSE; 
 
-  WRITE_RESPONSE: process
+  SEQUENCER_WRITE_RESPONSE: process
   begin
     wait for period; -- reset
 
@@ -807,10 +1043,58 @@ begin
       report "Write address mismatch" severity error;
     -- Step complete
     assert step_complete = '1' report "Should have finished a step" severity error;
+    wait;
+  end process SEQUENCER_WRITE_RESPONSE;
+
+  ENGINE_RESPONSE: process
+  begin
+    wait for period; -- Reset
+
+    wait for period; -- Pass.... TODO VALIDATE ME!!!
+
+     -- COL 1
+    wait for 9 * period;
+    assert data_in_b = DEAD report "1,1 should be dead" severity error; 
+    wait for 3 * period;
+    assert data_in_b = ALIVE report "2,1 should be alive" severity error; 
+    wait for 3 * period;
+    assert data_in_b = DEAD report "3,1 should be dead" severity error; 
+    wait for 3 * period;
+    assert data_in_b = DEAD report "4,1 should be dead" severity error; 
+    wait for 3 * period;
+    assert data_in_b = DEAD report "5,1 should be dead" severity error; 
+    wait for 3 * period;
+    assert data_in_b = DEAD report "6,1 should be dead" severity error; 
+
+    -- COL 2
+    wait for 9 * period;
+    assert data_in_b = DEAD report "1,2 should be dead" severity error; 
+    wait for 3 * period;
+    assert data_in_b = DEAD report "2,2 should be dead" severity error; 
+    wait for 3 * period;
+    assert data_in_b = ALIVE report "3,2 should be alive" severity error; 
+    wait for 3 * period;
+    assert data_in_b = ALIVE report "4,2 should be alive" severity error; 
+    wait for 3 * period;
+    assert data_in_b = DEAD report "5,2 should be dead" severity error; 
+    wait for 3 * period;
+    assert data_in_b = DEAD report "6,2 should be dead" severity error; 
+
+    -- COL 3
+    wait for 9 * period;
+    assert data_in_b = DEAD report "1,3 should be dead" severity error; 
+    wait for 3 * period;
+    assert data_in_b = ALIVE report "2,3 should be alive" severity error; 
+    wait for 3 * period;
+    assert data_in_b = ALIVE report "3,3 should be alive" severity error; 
+    wait for 3 * period;
+    assert data_in_b = DEAD report "4,3 should be dead" severity error; 
+    wait for 3 * period;
+    assert data_in_b = DEAD report "5,3 should be dead" severity error; 
+    wait for 3 * period;
+    assert data_in_b = DEAD report "6,3 should be dead" severity error; 
 
     wait;
-  end process WRITE_RESPONSE;
-
-
-
+  end process ENGINE_RESPONSE;
+  
 end behavioural;
