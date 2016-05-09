@@ -1,0 +1,6 @@
+*.o
+*.cf
+
+test_stencil_engine
+test_stencil_engine_glider
+traces/
